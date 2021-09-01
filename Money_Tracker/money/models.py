@@ -1,12 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+
+
 # Create your models here.
-
-
-
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
@@ -18,8 +17,8 @@ class Category(models.Model):
 
 class Budget(models.Model):
     date = models.DateTimeField(default=timezone.now)
-    name = models.CharField(max_length=50)
-    # categories = models.ManyToManyField(Category)
+    name = models.CharField(max_length=50, unique=True)
+    categories = models.ManyToManyField(Category)
     class Meta:
         ordering = ['-date']
 
@@ -28,8 +27,8 @@ class Budget(models.Model):
         return self.name
 
 class Card(models.Model):
-    cardName = models.CharField(max_length=10)
-    
+    cardName = models.CharField(max_length=20, verbose_name='Card Name/Bank Account', unique=True)
+
     def __str__(self):
         return self.cardName
 

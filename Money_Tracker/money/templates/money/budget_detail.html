@@ -21,7 +21,7 @@
       </tr>
     </thead>
 
-    {% for x in category_list %}
+    {% for x in object.categories.all %}
     <tbody>
       <tr>
         <!-- <td>{{ x.id }}</td> -->
@@ -59,6 +59,7 @@
         <th scope="col">Description</th>
         <th scope="col">Amount</th>
         <th scope="col">Category</th>
+        <th scope="col">Card/Account</th>
         <th scope="col">Note</th>
         <th scope="col">Update</th>
         <th scope="col">Delete</th>
@@ -74,6 +75,7 @@
           <td>{{ transaction.description }}</td>
           <td>${{ transaction.amount }}</td>
           <td>{{ transaction.category }}</td>
+          <td>{{ transaction.card }}</td>
           <td class='note-wrap'>{{ transaction.note }}</td>
           <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'transaction-update' transaction.id %}">Update</a></td>
           <td><a class="confirmation btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete_transaction' transaction.id %}">Delete</a></td>

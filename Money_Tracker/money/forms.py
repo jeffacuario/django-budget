@@ -1,7 +1,7 @@
 from django import forms
 # from django.contrib.auth.models import User
 # from django.contrib.auth.forms import UserCreationForm
-from .models import Budget, Transaction
+from .models import Budget, Card, Transaction
 
 
 # class UserRegisterForm(UserCreationForm):
@@ -29,9 +29,19 @@ from .models import Budget, Transaction
 
 # class NewTransactionForm(forms.ModelForm):
 #     # category = forms.ListField()
-
+#     testing = forms.EmailField()
+#     # formset = AuthorFormSet(queryset=Author.objects.filter(name__startswith='O'))
 #     class Meta:
 #         model = Transaction
-#         fields = ['description', 'amount', 'category', 'note']
+#         fields = ['description', 'amount', 'category', 'card','note']
 
-#         fields['category'] = Budget.objects.get
+class UpdatedCardFrom(forms.ModelForm):
+    # category = forms.ListField()
+    testing = forms.EmailField()
+    # formset = AuthorFormSet(queryset=Author.objects.filter(name__startswith='O'))
+    class Meta:
+        model = Card
+        fields = ['cardName']
+        labels = {
+            'cardName': ('Card Name!!!!!'),
+        }
