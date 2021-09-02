@@ -1,24 +1,18 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.views.generic import DetailView, CreateView, UpdateView
 from .models import Category, Budget, Transaction, Card
 from django.db.models import Sum
-from .forms import UpdatedCardFrom
 
 
 # Create your views here.
-# def home(request):
-#     return render(request, 'money/home.html')
+def home(request):
+    return render(request, 'money/home.html')
 
-class CardCreateView(CreateView):
+class CardCreateView(LoginRequiredMixin, CreateView):
     model = Card
     fields = ['cardName']
-    success_url = '/cards/'
-
-        # override form valid method
-    # def form_valid(self, form):
-    #     form.instance.author = self.request.user
-    #     return super().form_valid(form) # running form valid method on parent class
+    success_url = '/settings/cards/'
 
     def get_context_data(self, **kwargs):
         context = super(CardCreateView, self).get_context_data(**kwargs)
@@ -28,13 +22,13 @@ class CardCreateView(CreateView):
     def delete_card(request, pk):
         query = Card.objects.get(id=pk)
         query.delete()
-        return redirect("/cards/")   
+        return redirect("/settings/cards/")   
 
 
 class CardUpdateView(LoginRequiredMixin, UpdateView):
     model = Card
     fields = ['cardName']
-    success_url = '/cards/'
+    success_url = '/settings/cards/'
 
     def get_context_data(self, **kwargs):
         context = super(CardUpdateView, self).get_context_data(**kwargs)
@@ -43,18 +37,11 @@ class CardUpdateView(LoginRequiredMixin, UpdateView):
 
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     fields = ['name', 'amount']
-    success_url = '/categories/'
+    success_url = '/settings/categories/'
     
-    
-    # override form valid method
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form) # running form valid method on parent class
-
-
     def get_context_data(self, **kwargs):
         context = super(CategoryCreateView, self).get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
@@ -64,14 +51,14 @@ class CategoryCreateView(CreateView):
         query = Category.objects.get(id=pk)
         query.delete()
         # return HttpResponse("<h1>Deleted!</h1>")
-        return redirect("/categories/")   
+        return redirect("/settings/categories/")   
 
 
 
 class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     fields = ['name', 'amount']
-    success_url = '/categories/'
+    success_url = '/settings/categories/'
 
     def get_context_data(self, **kwargs):
         context = super(CategoryUpdateView, self).get_context_data(**kwargs)
@@ -80,7 +67,7 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class BudgetDetailView(DetailView):
+class BudgetDetailView(LoginRequiredMixin, DetailView):
     model = Budget
 
 
@@ -119,7 +106,7 @@ class BudgetDetailView(DetailView):
         return context
 
     def delete_transaction(self, pk):
-        redirect_string = "/"
+        redirect_string = "/budgets/"
         query = Transaction.objects.get(id=pk)
         redirect_string += str(query.budget.id)
         query.delete()
@@ -128,10 +115,10 @@ class BudgetDetailView(DetailView):
 
 
 
-class BudgetCreateView(CreateView):
+class BudgetCreateView(LoginRequiredMixin, CreateView):
     model = Budget
     fields = ['name', 'categories']
-    success_url = '/'
+    success_url = '/budgets'
 
 
     def get_context_data(self, **kwargs):
@@ -142,13 +129,13 @@ class BudgetCreateView(CreateView):
     def delete_budget(request, pk):
         query = Budget.objects.get(id=pk)
         query.delete()
-        return redirect("/")   
+        return redirect("/budgets")   
 
 
 class BudgetUpdateView(LoginRequiredMixin, UpdateView):
     model = Budget
     fields = ['name', 'categories']
-    success_url = '/'
+    success_url = '/budgets'
 
     def get_context_data(self, **kwargs):
         context = super(BudgetUpdateView, self).get_context_data(**kwargs)
@@ -157,7 +144,7 @@ class BudgetUpdateView(LoginRequiredMixin, UpdateView):
 
 
 
-class TransactionCreateView(CreateView):    
+class TransactionCreateView(LoginRequiredMixin, CreateView):    
     model = Transaction
     fields = ['description', 'amount','card', 'category','note']
 
@@ -165,7 +152,6 @@ class TransactionCreateView(CreateView):
         form = super(TransactionCreateView, self).get_form(*args, **kwargs)
         form.fields['category'].queryset = Budget.objects.get(pk=self.kwargs['pk']).categories.all()
         # x = Budget.objects.get(pk=self.kwargs['pk']).categories.all()
-        # print("\n\n",x)
         return form
 
     def form_valid(self, form):

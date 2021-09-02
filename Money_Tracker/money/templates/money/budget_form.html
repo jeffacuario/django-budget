@@ -24,37 +24,39 @@
         </form>
     </div>
 
-    <!-- Display all the budgets in the database -->
-    <table class="table table-sm" id='budget_table'>
-        <thead>
+    <div class='budgetTable'>
+      <!-- Display all the budgets in the database -->
+      <table class="table table-sm" id='budget_table'>
+          <thead>
+            <tr>
+              <!-- <th scope="col">#</th> -->
+              <th scope="col">Budget Name</th>
+              <th scope="col">Update</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+      
+          {% for item in budget_list %}
+          <tbody>
           <tr>
-            <!-- <th scope="col">#</th> -->
-            <th scope="col">Budget Name</th>
-            <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+              <!-- <th>{{ item.id }}</th> -->
+              <td>
+                <a href="{% url 'budgets-detail' item.id %}">
+                  {{ item.name }}
+                </a>
+              </td>
+      
+              <td>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'budget-update' item.id %}">Update</a>
+              </td>
+              <td>
+                <a class="confirmation btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete_budget' item.id %}">Delete</a>
+              </td>
           </tr>
-        </thead>
-    
-        {% for item in budget_list %}
-        <tbody>
-        <tr>
-            <!-- <th>{{ item.id }}</th> -->
-            <td>
-              <a href="{% url 'budgets-detail' item.id %}">
-                {{ item.name }}
-              </a>
-            </td>
-    
-            <td>
-              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'budget-update' item.id %}">Update</a>
-            </td>
-            <td>
-              <a class="confirmation btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete_budget' item.id %}">Delete</a>
-            </td>
-        </tr>
-    
-        </tbody>
-        {% endfor %}
-    </table>
+      
+          </tbody>
+          {% endfor %}
+      </table>
+    </div>
 
 {% endblock %}

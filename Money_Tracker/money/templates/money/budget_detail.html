@@ -1,5 +1,7 @@
 {% extends "money/base.html" %}
 {% load money_extras %}
+{% load humanize %}
+
 {% block content %}
     <!-- Add a new transaction -->
   <div class="border-top pt-3">
@@ -29,11 +31,11 @@
         <td>${{ x.amount }}</td>
 
         {% for y in sum_list %}
-          {% if y.category == x.id %}<td>${{ y.amount__sum }}</td>{% endif %}
+          {% if y.category == x.id %}<td>${{ y.amount__sum |floatformat:2|intcomma }}</td>{% endif %}
         {% endfor %}
 
         {% for y in sum_list %}
-          {% if y.category == x.id %}<td>${{ x.amount|subtract:y.amount__sum}}</td>{% endif %}
+          {% if y.category == x.id %}<td>${{ x.amount|subtract:y.amount__sum |floatformat:2|intcomma}}</td>{% endif %}
         {% endfor %}
 
       </tr>
@@ -41,9 +43,9 @@
 
     <tr>
       <th>Total</th>
-      <th>${{ total_categories.amount__sum}}</th>
-      <th>${{total_charges.amount__sum}}</th>
-      <th>${{ total_categories.amount__sum|subtract:total_charges.amount__sum}}</th>
+      <th>${{ total_categories.amount__sum |floatformat:2|intcomma}}</th>
+      <th>${{total_charges.amount__sum |floatformat:2|intcomma}}</th>
+      <th>${{ total_categories.amount__sum|subtract:total_charges.amount__sum |floatformat:2|intcomma}}</th>
     </tr>
     </table>
   </div>
@@ -73,7 +75,7 @@
           <!-- <td>{{ transaction.id }}</td> -->
           <td>{{ transaction.date|date:"m/d/Y" }}</td>
           <td>{{ transaction.description }}</td>
-          <td>${{ transaction.amount }}</td>
+          <td>${{ transaction.amount |floatformat:2|intcomma}}</td>
           <td>{{ transaction.category }}</td>
           <td>{{ transaction.card }}</td>
           <td class='note-wrap'>{{ transaction.note }}</td>
