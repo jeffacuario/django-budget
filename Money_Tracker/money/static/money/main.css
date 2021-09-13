@@ -1,0 +1,60 @@
+body {
+    background-color: #f9ffff;
+}
+
+.navbar {
+    background-color: #bbbce9;
+}
+
+.pageContent {
+    /* width: 800px; */
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 1%;
+}
+
+#id_cardName, #id_name, #id_amount, #id_username, #id_password, #id_email, #id_password1, #id_password2, #id_description, #id_card, #id_category, #id_note {
+    width: 250px;
+}
+
+#id_categories {
+    width: 250px;
+    height: 300px;
+}
+
+
+.budgetTable, .categoryTable{
+    margin-left: 3%;
+}
+
+.budgetContent, .categoryContent, .homeContent, .detailContent{
+    display: flex;
+    flex-direction: row;
+}
+
+.transactionTable {
+    margin-left: 3%;
+}
+
+ 
+
+.userMedia {
+    margin: 50px;
+}
+
+.profileSection {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 1%;
+}
+
+.media-body {
+    text-align: center;
+}
+
+.signInBtn {
+    font-weight: 700;
+    
+}

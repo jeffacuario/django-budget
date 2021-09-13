@@ -1,13 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Category, Budget, Transaction, Card
 from django.db.models import Sum
 
-
 # Create your views here.
-def home(request):
-    return render(request, 'money/home.html')
+# def home(request):
+#     return render(request, 'money/home.html')
+
+# @login_required
+class HomeListView(LoginRequiredMixin, ListView):
+    model = Budget
+    template_name = 'money/home.html' # <app>/<model>_<viewtype>.html
+    context_object_name = 'budgets'
+    # ordering = ['-date_posted']
+    # paginate_by = 5
+    def get_context_data(self, **kwargs):
+        context = super(HomeListView, self).get_context_data(**kwargs)
+        context['transaction_list'] = Transaction.objects.all()
+        print(f"\n{context}\n")
+        return context
+
 
 class CardCreateView(LoginRequiredMixin, CreateView):
     model = Card

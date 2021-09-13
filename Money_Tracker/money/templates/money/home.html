@@ -1,8 +1,66 @@
 {% extends "money/base.html" %}
+{% load money_extras %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
 {% block content %}
-    {% if user.is_authenticated %}
-        <h1>Welcome, {{user}}</h1>
-    {% else %}
-        <h1>Hello, please sign in or sign up</h1>
-    {% endif %}
+<div class="pageContent">
+    <h1>Welcome, {{user}}</h1>
+
+    <div class="homeContent">
+      <!-- List of all budgets -->
+      <div class="">
+        <table class="table table-bordered table-sm">
+          <legend>All Budgets</legend>
+          <thead>
+          <tr>
+              <!-- <th scope="col">ID</th> -->
+              <th scope="col">Name</th>
+          </tr>
+          </thead>
+
+          {% for x in budgets %}
+          <tbody>
+            <tr>
+              <td><a href="{% url 'budgets-detail' x.id %}">{{ x.name }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+
+      <div class="transactionTable">
+        <!-- List of all transactions -->
+        <table class="table table-bordered table-sm">
+            <legend>Recent Transactions</legend>
+            <thead>
+            <tr>
+                <!-- <th scope="col">ID</th> -->
+                <th scope="col">Budget</th>
+                <th scope="col">Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Category</th>
+                <th scope="col">Card/Account</th>
+                <th scope="col">Note</th>
+            </tr>
+            </thead>
+
+            {% for transaction in transaction_list %}
+            <tbody>
+              <tr>
+                <!-- <td><a href="{% url 'budgets-detail' transaction.budget.id %}">{{ transaction.budget }}</a></td> -->
+                <td>{{ transaction.budget }}</td>
+                <td>{{ transaction.date|date:"m/d/Y" }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>${{ transaction.amount |floatformat:2|intcomma}}</td>
+                <td>{{ transaction.category }}</td>
+                <td>{{ transaction.card }}</td>
+                <td class='note-wrap'>{{ transaction.note }}</td>
+              </tr>
+            {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
+

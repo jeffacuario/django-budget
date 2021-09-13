@@ -2,10 +2,18 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<div class="pageContent categoryContent">
     <div class='content-section'>
         <form action="" method='POST'>
             {% csrf_token %}
             <fieldset class="form-group">
+
+              {% if form.name.value %}
+              <legend class="border-bottom mb-4">Edit Category {{ form.name.value }}</legend>
+              {% else %}
+              <legend class="border-bottom mb-4">Create a new Category</legend>
+              {% endif %}
+          
                 {{ form | crispy }}
             </fieldset>
 
@@ -19,6 +27,7 @@
         </form>
     </div>
 
+    <div class="categoryTable">
     <!-- Display all the credit cards in the database -->
     <table class="table table-bordered table-sm">
         <legend>List of all categories</legend>
@@ -45,5 +54,6 @@
         </tbody>
         {% endfor %}
       </table>
-
+    </div>
+</div>
 {% endblock %}

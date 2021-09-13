@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+  <div class="pageContent budgetContent">
     <div class='content-section'>
         <form action="" method='POST'>
             {% csrf_token %}
@@ -27,6 +28,7 @@
     <div class='budgetTable'>
       <!-- Display all the budgets in the database -->
       <table class="table table-sm" id='budget_table'>
+        <legend class="border-bottom mb-4">Budget List</legend>
           <thead>
             <tr>
               <!-- <th scope="col">#</th> -->
@@ -58,5 +60,7 @@
           {% endfor %}
       </table>
     </div>
+
+  </div>
 
 {% endblock %}

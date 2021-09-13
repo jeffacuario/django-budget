@@ -3,87 +3,94 @@
 {% load humanize %}
 
 {% block content %}
-    <!-- Add a new transaction -->
-  <div class="border-top pt-3">
-    <h5>
-        <a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'transaction-create' object.id %}">New Transaction</a>
-    </h5>
-  </div>
+<div class="pageContent">
 
-  <div>
-    <table class="table table-bordered table-sm">
-      <legend>{{ object.name }} Summary </legend>
-    <thead>
-      <tr>
-        <!-- <th scope="col">#</th> -->
-        <th scope="col">Category</th>
-        <th scope="col">Amount</th>
-        <th scope="col">Charges</th>
-        <th scope="col">Left Over</th>
-      </tr>
-    </thead>
+      <!-- Add a new transaction -->
+    <div class="border-top pt-3">
+      <h5>
+          <a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'transaction-create' object.id %}">New Transaction</a>
+      </h5>
+    </div>
 
-    {% for x in object.categories.all %}
-    <tbody>
-      <tr>
-        <!-- <td>{{ x.id }}</td> -->
-        <td>{{ x.name }}</td>
-        <td>${{ x.amount }}</td>
+  <div class="detailContent">
 
-        {% for y in sum_list %}
-          {% if y.category == x.id %}<td>${{ y.amount__sum |floatformat:2|intcomma }}</td>{% endif %}
-        {% endfor %}
-
-        {% for y in sum_list %}
-          {% if y.category == x.id %}<td>${{ x.amount|subtract:y.amount__sum |floatformat:2|intcomma}}</td>{% endif %}
-        {% endfor %}
-
-      </tr>
-    {% endfor %}
-
-    <tr>
-      <th>Total</th>
-      <th>${{ total_categories.amount__sum |floatformat:2|intcomma}}</th>
-      <th>${{total_charges.amount__sum |floatformat:2|intcomma}}</th>
-      <th>${{ total_categories.amount__sum|subtract:total_charges.amount__sum |floatformat:2|intcomma}}</th>
-    </tr>
-    </table>
-  </div>
-
-
-  <!-- List of all transactions -->
-  <table class="table table-bordered table-sm">
-    <legend>Transactions</legend>
-    <thead>
-      <tr>
-        <!-- <th scope="col">ID</th> -->
-        <th scope="col">Date</th>
-        <th scope="col">Description</th>
-        <th scope="col">Amount</th>
-        <th scope="col">Category</th>
-        <th scope="col">Card/Account</th>
-        <th scope="col">Note</th>
-        <th scope="col">Update</th>
-        <th scope="col">Delete</th>
-      </tr>
-    </thead>
-  
-    {% for transaction in transaction_list %}
-      <tbody>
-        {% if transaction.budget.id == object.id %}
+    <div>
+      <table class="table table-bordered table-sm" id="summaryTable">
+        <legend>{{ object.name }} Summary </legend>
+      <thead>
         <tr>
-          <!-- <td>{{ transaction.id }}</td> -->
-          <td>{{ transaction.date|date:"m/d/Y" }}</td>
-          <td>{{ transaction.description }}</td>
-          <td>${{ transaction.amount |floatformat:2|intcomma}}</td>
-          <td>{{ transaction.category }}</td>
-          <td>{{ transaction.card }}</td>
-          <td class='note-wrap'>{{ transaction.note }}</td>
-          <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'transaction-update' transaction.id %}">Update</a></td>
-          <td><a class="confirmation btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete_transaction' transaction.id %}">Delete</a></td>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">Category</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Charges</th>
+          <th scope="col">Left Over</th>
         </tr>
-        {% endif %}
-    {% endfor %}
-    </table>
+      </thead>
 
+      {% for x in object.categories.all %}
+      <tbody>
+        <tr>
+          <!-- <td>{{ x.id }}</td> -->
+          <td>{{ x.name }}</td>
+          <td>${{ x.amount }}</td>
+
+          {% for y in sum_list %}
+            {% if y.category == x.id %}<td>${{ y.amount__sum |floatformat:2|intcomma }}</td>{% endif %}
+          {% endfor %}
+
+          {% for y in sum_list %}
+            {% if y.category == x.id %}<td id="leftOver">${{ x.amount|subtract:y.amount__sum |floatformat:2|intcomma}}</td>{% endif %}
+          {% endfor %}
+
+        </tr>
+      {% endfor %}
+
+      <tr>
+        <th>Total</th>
+        <th>${{ total_categories.amount__sum |floatformat:2|intcomma}}</th>
+        <th>${{total_charges.amount__sum |floatformat:2|intcomma}}</th>
+        <th>${{ total_categories.amount__sum|subtract:total_charges.amount__sum |floatformat:2|intcomma}}</th>
+      </tr>
+      </table>
+    </div>
+
+    <div class="transactionTable">
+      <!-- List of all transactions -->
+      <table class="table table-bordered table-sm">
+        <legend>Transactions</legend>
+        <thead>
+          <tr>
+            <!-- <th scope="col">ID</th> -->
+            <th scope="col">Date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Category</th>
+            <th scope="col">Card/Account</th>
+            <th scope="col">Note</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+      
+        {% for transaction in transaction_list %}
+          <tbody>
+            {% if transaction.budget.id == object.id %}
+            <tr>
+              <!-- <td>{{ transaction.id }}</td> -->
+              <td>{{ transaction.date|date:"m/d/Y" }}</td>
+              <td>{{ transaction.description }}</td>
+              <td>${{ transaction.amount |floatformat:2|intcomma}}</td>
+              <td>{{ transaction.category }}</td>
+              <td>{{ transaction.card }}</td>
+              <td class='note-wrap'>{{ transaction.note }}</td>
+              <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'transaction-update' transaction.id %}">Update</a></td>
+              <td><a class="confirmation btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete_transaction' transaction.id %}">Delete</a></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+</div>
 {% endblock content %}

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 from .views import (
     # CategoryListView,
@@ -16,12 +17,17 @@ from .views import (
     TransactionUpdateView,
 
     CardCreateView,
-    CardUpdateView
+    CardUpdateView,
+
+    HomeListView
     )
 
 
+
 urlpatterns = [
-    path('', views.home, name='money-home'),
+    # path('', views.home, name='money-home'),
+    path('', HomeListView.as_view(), name='money-home'),
+    # path('', auth_views.LoginView.as_view(template_name='money/home.html'), name='login'),
     # path('', BudgetListView.as_view(), name='money-home'),  
 
     path('budgets/', BudgetCreateView.as_view(), name='budgets-home'),
