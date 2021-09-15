@@ -8,12 +8,13 @@
 Windows:
 
 ```sh
-pip install -r requirements.txt
+> pip install -r requirements.txt
 ```
 
 ## Starting Server
 
 ```sh
-python manage.py runserver
+> python manage.py runserver
+
 open web browser to http://127.0.0.1:8000/
 ```
