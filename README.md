@@ -1,5 +1,5 @@
 # django-budget
-> A web application that allows users to track expenses. Utilized HTML, CSS & JavaScript on the front end, Django on the backend
+A web application that allows users to track expenses. Utilized HTML, CSS & JavaScript on the front end, Django on the backend
 
 ![](django-budget.gif)
 
