@@ -16,5 +16,5 @@ Windows:
 ```sh
 > python manage.py runserver
 
-open web browser to http://127.0.0.1:8000/
+open web browser to [a link]http://127.0.0.1:8000/
 ```
