@@ -14,7 +14,7 @@ npm install my-crazy-module --save
 Windows:
 
 ```sh
-edit autoexec.bat
+pip install -r requirements.txt
 ```
 
 ## Usage example
